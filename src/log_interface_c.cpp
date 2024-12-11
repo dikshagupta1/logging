@@ -50,7 +50,7 @@ int get_log_metadata(LogHandle log_handle, char* name, int name_size, char* unit
     if (!log_handle || !name || !units || !axis) return -1;
 
     LogData* log = static_cast<LogData*>(log_handle);
-    Metadata metadata = log->getMetadata();
+    LogMetadata metadata = log->getMetadata();
 
     // Copy name
     std::strncpy(name, metadata.name.c_str(), name_size - 1);

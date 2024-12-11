@@ -41,6 +41,6 @@ std::vector<float> UltrasonicAmplitudeLog::getSubset(float start_depth, float en
     return subset;
 }
 
-Metadata UltrasonicAmplitudeLogData::getMetadata() const {
+LogMetadata UltrasonicAmplitudeLogData::getMetadata() const {
     return log.metadata;
 }

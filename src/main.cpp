@@ -18,7 +18,7 @@ int main() {
     size_t columns = 10;
     float azimuth_step = 0.6;
     std::vector<float> data(rows * columns, 1.0f); // Dummy data
-    Metadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
+    LogMetadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
 
     UltrasonicAmplitudeLog log = {
         data.data(),
@@ -43,7 +43,7 @@ int main() {
     }
 
     // Get metadata
-    Metadata metadata = get_log_metadata(log);
+    LogMetadata metadata = get_log_metadata(log);
     printf("Log Name: %s, Units: %s\n", metadata.name, metadata.units);
 
     // Extract a subset

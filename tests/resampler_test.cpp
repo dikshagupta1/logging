@@ -1,14 +1,14 @@
 #include <cassert>
 #include <iostream>
-#include "log_data.h"
-#include "resampler.cpp"
+#include "log_types.h"
+#include "resampler.h"
 
 void test_resampler() {
     size_t rows = 5;
     size_t columns = 10;
     float azimuth_step = 0.6;
     std::vector<float> data(rows * columns, 1.0f); // Dummy data
-    Metadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
+    LogMetadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
 
     UltrasonicAmplitudeLog log = {
         data.data(),

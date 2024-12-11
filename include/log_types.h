@@ -29,7 +29,7 @@ typedef struct {
     float* activity_levels;     // Pointer to gamma ray activity levels
     float* axis_value;          // Depths/time corresponding to activity levels
     size_t axis_count;          // Number of data points a.k.a No. of rows
-    Metadata metadata;
+    LogMetadata metadata;
 } GammaRayLog;
 
 // Struct for Optical Image Log
@@ -39,7 +39,7 @@ typedef struct {
     size_t axis_count;          // Number of depth/time samples a.k.a No. of rows
     size_t azimuth_count;       // Number of azimuthal columns a.k.a Number of columns
     uint8_t bits_per_channel;   // Number of bits per channel (e.g. 8, 10, 12)
-    Metadata metadata;
+    LogMetadata metadata;
 } OpticalImageLog;
 
 // Struct for Sonic RX Log
@@ -50,7 +50,7 @@ typedef struct {
     uint32_t* point_counts;     // Number of points in each waveform
     float* axis_value;          // Array of depth/time values
     size_t axis_count;          // Number of depth/time samples a.k.a No. of rows
-    Metadata metadata;
+    LogMetadata metadata;
 } SonicRXLog;
 
 #endif // LOG_TYPES_H

@@ -6,7 +6,7 @@ This project provides data structures, interfaces, and a resampling implementati
 
 ## **Project Structure**
 ```
-/log-exercise 
+/logging 
 ├── include/ # Header files for data structures and interfaces 
 │ ├── log_types.h 
 │ ├── log_interface.h
@@ -37,8 +37,7 @@ This project provides data structures, interfaces, and a resampling implementati
 ### Build Instructions
 1. Clone the repository:
    ```bash
-   git clone <repo_url> log-exercise
-   cd log-exercise
+   git clone https://github.com/dikshagupta1/logging.git
 2. Create a build directory and run CMake:
     ```bash
     mkdir build && cd build

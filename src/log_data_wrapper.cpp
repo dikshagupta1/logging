@@ -25,7 +25,7 @@ std::vector<float> LogDataWrapper::getSubset(float start, float end) {
     return std::vector<float>(buffer, buffer + num_elements);
 }
 
-Metadata LogDataWrapper::getMetadata() const {
+LogMetadata LogDataWrapper::getMetadata() const {
     char name[50];
     char units[20];
     char axis[20];
@@ -33,7 +33,7 @@ Metadata LogDataWrapper::getMetadata() const {
     if (result != 0) {
         throw std::runtime_error("Failed to get log metadata.");
     }
-    Metadata metadata;
+    LogMetadata metadata;
     metadata.name = std::string(name);
     metadata.units = std::string(units);
     metadata.axis = std::string(axis);

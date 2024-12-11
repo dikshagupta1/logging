@@ -13,7 +13,7 @@ private:
 public:
     void load(const std::string& file_path) override;
     std::vector<float> getSubset(float start_depth, float end_depth) override;
-    Metadata getMetadata() const override;
+    LogMetadata getMetadata() const override;
 };
 
 #endif // ULTRASONIC_AMP_LOG_H
