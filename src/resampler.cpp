@@ -1,6 +1,6 @@
 #include "resampler.h"
 
-std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
+/*std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
     const UltrasonicAmplitudeLog& log,
     float start_depth,
     float end_depth,
@@ -26,7 +26,7 @@ std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
         float target_depth = target_depths[i];
 
         // Find the nearest data point in the original log
-        auto it = std::lower_bound(log.axis_value, log.depths + log.axis_count, target_depth);
+        auto it = std::lower_bound(log.axis_value, log.axis_value + log.axis_count, target_depth);
         size_t idx = std::distance(log.axis_value, it);
 
         if (idx == 0 || idx == log.axis_count) {
@@ -41,7 +41,45 @@ std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
     }
 
     return resampled_data;
+}*/
+
+std::vector<std::vector<float>> resampleLog(
+    const UltrasonicAmplitudeLog& log,
+    float depth_min, float depth_max,
+    size_t resample_depth_points, size_t resample_azimuth_points) {
+    
+    std::vector<std::vector<float>> resampled_data(
+        resample_depth_points, std::vector<float>(resample_azimuth_points, 0.0f));
+
+    float depth_step = (depth_max - depth_min) / resample_depth_points;
+    float azimuth_step = 360.0f / resample_azimuth_points;
+
+    for (size_t i = 0; i < resample_depth_points; ++i) {
+        float depth = depth_min + i * depth_step;
+
+        // Find the closest depth index in the original data
+        size_t idx = 0;
+        for (size_t k = 1; k < log.axis_count; ++k) {
+            if (std::abs(log.axis_value[k] - depth) < std::abs(log.axis_value[idx] - depth)) {
+                idx = k;
+            }
+        }
+
+        for (size_t j = 0; j < resample_azimuth_points; ++j) {
+            // Calculate azimuth based on the resample step
+            float azimuth = j * azimuth_step;
+
+            // Map azimuth to original data index
+            size_t azimuth_idx = static_cast<size_t>(azimuth / log.azimuth_step) % log.azimuth_count;
+
+            // Access the amplitude_data using 2D indexing
+            resampled_data[i][j] = log.amplitude_data[idx][azimuth_idx];
+        }
+    }
+
+    return resampled_data;
 }
+
 
 float Resampler::interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi) {
     auto it = std::lower_bound(x.begin(), x.end(), xi);
