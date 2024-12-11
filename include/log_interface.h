@@ -12,7 +12,7 @@ class LogData {
 public:
     virtual void load(const std::string& file_path) = 0; // Load log data from a file
     virtual std::vector<float> getSubset(float start_depth, float end_depth) = 0; // Extract a subset of data
-    virtual LogMetadata getMetadata() const = 0; // Retrieve log metadata
+    virtual LogMetadata* getMetadata() const = 0; // Retrieve log metadata
     virtual ~LogData() = default;
 };
 

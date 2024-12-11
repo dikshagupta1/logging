@@ -14,7 +14,7 @@ void print_resampled_data(const std::vector<std::vector<float>>& data) {
 
 int main() {
     // Example dataset for Ultrasonic Amplitude Log
-    size_t rows = 5;
+    /*size_t rows = 5;
     size_t columns = 10;
     float azimuth_step = 0.6;
     std::vector<float> data(rows * columns, 1.0f); // Dummy data
@@ -89,7 +89,7 @@ int main() {
 
     // Clean up
     delete[] log.depths;
-    delete[] log.data;
+    delete[] log.data;*/
 
     return 0;
 }

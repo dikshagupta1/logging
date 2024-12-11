@@ -13,7 +13,7 @@ include_directories(include)
 
 # Add Source Files
 set(SOURCES
-    src/log_data_wrapper.cpp
+    src/sample_wrapper.cpp
     src/log_interface_c.cpp
     src/ultrasonic_amp_log.cpp
     src/resampler.cpp
