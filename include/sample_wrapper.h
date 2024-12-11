@@ -1,5 +1,5 @@
-#ifndef LOG_DATA_WRAPPER_H
-#define LOG_DATA_WRAPPER_H
+#ifndef SAMPLE_WRAPPER_H
+#define SAMPLE_WRAPPER_H
 
 #include "log_interface_c.h"
 #include <string>
@@ -17,4 +17,4 @@ public:
     LogMetadata getMetadata() const;
 };
 
-#endif // LOG_DATA_WRAPPER_H
+#endif // SAMPE_WRAPPER_H

@@ -1,4 +1,4 @@
-#include "log_data_wrapper.h"
+#include "sample_wrapper.h"
 #include <stdexcept>
 #include <cstring>
 #include <stdint.h>
