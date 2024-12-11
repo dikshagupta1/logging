@@ -2,7 +2,6 @@
 #include "log_interface_c.h"
 #include "log_interface.h"
 #include "ultrasonic_amp_log.h"
-#include "gamma_ray_log.h"
 #include <cstring>
 #include <string.h>
 
@@ -13,9 +12,6 @@ LogHandle load_log_data_c(const char* file_path, LogType log_type) {
     switch (log_type) {
         case LOG_TYPE_ULTRASONIC_AMPLITUDE:
             log = new UltrasonicAmplitudeLogData();
-            break;
-        case LOG_TYPE_GAMMA_RAY:
-            log = new GammaRayLogData();
             break;
         // Add cases for other log types...
         default:

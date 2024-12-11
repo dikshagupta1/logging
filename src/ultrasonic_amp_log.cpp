@@ -2,7 +2,7 @@
 #include <fstream>
 #include <stdexcept>
 
-void UltrasonicAmplitudeLog::load(const std::string& file_path) {
+void UltrasonicAmplitudeLogData::load(const std::string& file_path) {
     // Implement file loading logic
     // For demonstration, we'll mock the data
     log.rows = 100;
@@ -22,7 +22,7 @@ void UltrasonicAmplitudeLog::load(const std::string& file_path) {
     // In a real implementation, read from file_path and populate log.data accordingly
 }
 
-std::vector<float> UltrasonicAmplitudeLog::getSubset(float start_depth, float end_depth) {
+std::vector<float> UltrasonicAmplitudeLogData::getSubset(float start_depth, float end_depth) {
     std::vector<float> subset;
 
     // Find corresponding row indices for start_depth and end_depth

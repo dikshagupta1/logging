@@ -1,14 +1,14 @@
-#ifndef ULTRASONIC_AMP_LOG_H
-#define ULTRASONIC_AMP_LOG_H
+#ifndef ULTRASONIC_AMP_LOG_DATA_H
+#define ULTRASONIC_AMP_LOG_DATA_H
 
 #include "log_interface.h"
 
 /**
  * @brief Derived class for ultrasonic amplitude log.
  */
-class UltrasonicAmplitudeLog : public LogData {
+class UltrasonicAmplitudeLogData : public LogData {
 private:
-    UltrasonicAmplitudeLog log;
+    UltrasonicAmplitudeLogData log;
 
 public:
     void load(const std::string& file_path) override;
@@ -16,4 +16,4 @@ public:
     LogMetadata getMetadata() const override;
 };
 
-#endif // ULTRASONIC_AMP_LOG_H
+#endif // ULTRASONIC_AMP_LOG_DATA_H
