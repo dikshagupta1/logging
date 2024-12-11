@@ -43,11 +43,11 @@ int get_log_subset_c(LogHandle log_handle, float start, float end, float* out_su
     return static_cast<int>(subset.size());
 }
 
-int get_log_metadata_c(LogHandle log_handle, LogMetadata *metadata) {
+int get_log_metadata_c(LogHandle log_handle, LogMetadata* metadata) {
     if (!log_handle || !metadata) return -1;
 
     LogData* log = static_cast<LogData*>(log_handle);
-    metadata = log->getMetadata();
+    *metadata = log->getMetadata();
 
     /* Copy name
     std::strncpy(name, metadata.name.c_str(), name_size - 1);
