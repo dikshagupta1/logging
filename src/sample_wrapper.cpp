@@ -26,7 +26,7 @@ std::vector<float> LogDataWrapper::getSubset(float start, float end) {
     return std::vector<float>(buffer, buffer + num_elements);
 }
 
-LogMetadata LogDataWrapper::getMetadata() {
+LogMetadata& LogDataWrapper::getMetadata() {
    
     LogMetadata *metadata;
     int result = get_log_metadata_c(handle, metadata);
