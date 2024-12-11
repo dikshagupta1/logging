@@ -2,12 +2,13 @@
 #define LOG_TYPES_H
 
 #include <cstdint>
+#include <stddef.h>
 
 // Struct for metadata
 typedef struct {
     char name[256];  // Name of the log
-    char units[32]; // Units of measurement (e.g. "meters", "seconds")
-    char axis[32];  // Axis description (e.g. "depth", "time")
+    char units[256]; // Units of measurement (e.g. "meters", "seconds")
+    char axis[256];  // Axis description (e.g. "depth", "time")
 } LogMetadata;
 
 // Struct for Ultrasonic Amplitude Log

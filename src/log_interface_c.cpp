@@ -4,6 +4,7 @@
 #include "ultrasonic_amp_log.h"
 #include "gamma_ray_log.h"
 #include <cstring>
+#include <string.h>
 
 // Factory function to create appropriate LogData objects based on LogType
 LogHandle load_log_data_c(const char* file_path, LogType log_type) {
@@ -46,7 +47,7 @@ int get_log_subset_c(LogHandle log_handle, float start, float end, float* out_su
     return static_cast<int>(subset.size());
 }
 
-int get_log_metadata_c(LogHandle log_handle, char* name, int name_size, char* units, int units_size, char* axis, int axis_size) {
+int get_log_metadata_c(LogHandle log_handle, char* name, uint8_t name_size, char* units, uint8_t units_size, char* axis, uint8_t axis_size) {
     if (!log_handle || !name || !units || !axis) return -1;
 
     LogData* log = static_cast<LogData*>(log_handle);

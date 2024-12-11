@@ -1,6 +1,7 @@
 #include "log_data_wrapper.h"
 #include <stdexcept>
 #include <cstring>
+#include <stdint.h>
 
 LogDataWrapper::LogDataWrapper(const std::string& file_path, LogType type) {
     handle = load_log_data_c(file_path.c_str(), type);
@@ -26,7 +27,7 @@ std::vector<float> LogDataWrapper::getSubset(float start, float end) {
 }
 
 LogMetadata LogDataWrapper::getMetadata() const {
-    const MAX_SIZE 64
+    const uint8_t MAX_SIZE 255;
     char* name, units, axis;
     int result = get_log_metadata_c(handle, name, MAX_SIZE, units, MAX_SIZE, axis, MAX_SIZE);
     if (result != 0) {
