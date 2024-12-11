@@ -73,7 +73,7 @@ int get_log_subset_c(LogHandle log, float start, float end, float* out_subset, i
  * @param axis_size Size of the axis buffer.
  * @return 0 on success, non-zero on failure.
  */
-int get_log_metadata_c(LogHandle log, char* name, uint8_t name_size, char* units, uint8_t units_size, char* axis, uint8_t axis_size);
+int get_log_metadata_c(LogHandle log, LogMetadata metadata);
 
 /**
  * @brief Free memory allocated for log data.

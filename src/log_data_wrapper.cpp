@@ -27,15 +27,5 @@ std::vector<float> LogDataWrapper::getSubset(float start, float end) {
 }
 
 LogMetadata LogDataWrapper::getMetadata() const {
-    const uint8_t MAX_SIZE 255;
-    char* name, units, axis;
-    int result = get_log_metadata_c(handle, name, MAX_SIZE, units, MAX_SIZE, axis, MAX_SIZE);
-    if (result != 0) {
-        throw std::runtime_error("Failed to get log metadata.");
-    }
-    LogMetadata metadata;
-    metadata.name = name;
-    metadata.units = units;
-    metadata.axis = axis;
-    return metadata;
+    // TODO:Implementation here
 }

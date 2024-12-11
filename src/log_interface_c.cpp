@@ -47,13 +47,13 @@ int get_log_subset_c(LogHandle log_handle, float start, float end, float* out_su
     return static_cast<int>(subset.size());
 }
 
-int get_log_metadata_c(LogHandle log_handle, char* name, uint8_t name_size, char* units, uint8_t units_size, char* axis, uint8_t axis_size) {
-    if (!log_handle || !name || !units || !axis) return -1;
+int get_log_metadata_c(LogHandle log_handle, LogMetadata metadata) {
+    if (!log_handle || !metadata) return -1;
 
     LogData* log = static_cast<LogData*>(log_handle);
-    LogMetadata metadata = log->getMetadata();
+    metadata = log->getMetadata();
 
-    // Copy name
+    /* Copy name
     std::strncpy(name, metadata.name.c_str(), name_size - 1);
     name[name_size - 1] = '\0';
 
@@ -63,7 +63,7 @@ int get_log_metadata_c(LogHandle log_handle, char* name, uint8_t name_size, char
 
     // Copy axis
     std::strncpy(axis, metadata.axis.c_str(), axis_size - 1);
-    axis[axis_size - 1] = '\0';
+    axis[axis_size - 1] = '\0';*/
 
     return 0;
 }
