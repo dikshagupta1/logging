@@ -72,29 +72,29 @@ Implemented in resampler.cpp, the Resampler class:
 
 ### Developer Notes
 **Functions**
-1. load_log_data:
+1. load_log_data_c:
     
     Dynamically loads a specific type of log data from a file.
     Takes the file path and log type as input.
     Returns a generic void* pointer that can be cast to the appropriate log type (e.g., UltrasonicAmplitudeLog*).
 
-2. get_log_subset:
+2. get_log_subset_c:
 
     Extracts a subset of the log data within a specified range (depth or time).
     Useful for analyzing or visualizing specific sections of the dataset.
 
-3. get_log_metadata:
+3. get_log_metadata_c:
 
     Provides access to the metadata of the log, such as name, units, and axis type.
     Helps in understanding the context and structure of the log.
 
-4. free_log_data:
+4. free_log_data_c:
 
     Frees all dynamically allocated memory associated with the log data.
     Ensures efficient memory management and avoids leaks.
 
 **Notes**
-- The void* return type in load_log_data and get_log_subset allows flexibility for multiple log types. Cast it to the appropriate type based on LogType.
+- The void* return type in load_log_data_c and get_log_subset_c allows flexibility for multiple log types. Cast it to the appropriate type based on LogType.
 - The interface is lightweight, providing only essential functionality for interacting with log data while keeping the implementation hidden.
 
 ---

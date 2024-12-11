@@ -40,7 +40,7 @@ typedef void* LogHandle;
  * @param log_type Type of the log (e.g., ULTRASONIC_AMPLITUDE, GAMMA_RAY).
  * @return Handle to the loaded log data. Cast to the appropriate log type.
  */
-LogHandle load_log_data(const char* file_path, LogType log_type);
+LogHandle load_log_data_c(const char* file_path, LogType log_type);
 
 /**
  * @brief Retrieve a subset of log data.
@@ -56,7 +56,7 @@ LogHandle load_log_data(const char* file_path, LogType log_type);
  * @param max_size Maximum number of elements that can be written to out_subset.
  * @return Number of elements written to out_subset, or -1 on failure.
  */
-int get_log_subset(LogHandle log, float start, float end, float* out_subset, int max_size);
+int get_log_subset_c(LogHandle log, float start, float end, float* out_subset, int max_size);
 
 /**
  * @brief Retrieve metadata for a log.
@@ -72,7 +72,7 @@ int get_log_subset(LogHandle log, float start, float end, float* out_subset, int
  * @param axis_size Size of the axis buffer.
  * @return 0 on success, non-zero on failure.
  */
-int get_log_metadata(LogHandle log, char* name, int name_size, char* units, int units_size, char* axis, int axis_size);
+int get_log_metadata_c(LogHandle log, char* name, int name_size, char* units, int units_size, char* axis, int axis_size);
 
 /**
  * @brief Free memory allocated for log data.
@@ -82,7 +82,7 @@ int get_log_metadata(LogHandle log, char* name, int name_size, char* units, int 
  *
  * @param log Handle to the log data structure..
  */
-void free_log_data(LogHandle log);
+void free_log_data_c(LogHandle log);
 
 #ifdef __cplusplus
 }

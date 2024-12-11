@@ -1,8 +1,7 @@
 #ifndef LOG_TYPES_H
 #define LOG_TYPES_H
 
-#include <stdint.h>
-
+#include <cstdint>
 
 // Struct for metadata
 typedef struct {

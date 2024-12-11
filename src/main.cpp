@@ -36,25 +36,25 @@ int main() {
 
     // Example 2
     // Load Ultrasonic Amplitude log
-    UltrasonicAmplitudeLog* log = (UltrasonicAmplitudeLog*)load_log_data("ultrasonic_log.dat", ULTRASONIC_AMPLITUDE);
+    UltrasonicAmplitudeLog* log = (UltrasonicAmplitudeLog*)load_log_data_c("ultrasonic_log.dat", ULTRASONIC_AMPLITUDE);
     if (!log) {
         printf("Failed to load log data.\n");
         return 1;
     }
 
     // Get metadata
-    LogMetadata metadata = get_log_metadata(log);
+    LogMetadata metadata = get_log_metadata_c(log);
     printf("Log Name: %s, Units: %s\n", metadata.name, metadata.units);
 
     // Extract a subset
-    UltrasonicAmplitudeLog* subset = (UltrasonicAmplitudeLog*)get_log_subset(log, 0.0f, 10.0f);
+    UltrasonicAmplitudeLog* subset = (UltrasonicAmplitudeLog*)get_log_subset_c(log, 0.0f, 10.0f);
     if (subset) {
         printf("Subset extracted successfully.\n");
-        free_log_data(subset);
+        free_log_data_c(subset);
     }
 
     // Free memory
-    free_log_data(log);
+    free_log_data_c(log);
 
     //Example 3
     // Simulated log data for testing
