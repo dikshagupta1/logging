@@ -26,17 +26,17 @@ std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
         float target_depth = target_depths[i];
 
         // Find the nearest data point in the original log
-        auto it = std::lower_bound(log.depths, log.depths + log.depth_count, target_depth);
-        size_t idx = std::distance(log.depths, it);
+        auto it = std::lower_bound(log.axis_value, log.depths + log.axis_count, target_depth);
+        size_t idx = std::distance(log.axis_value, it);
 
-        if (idx == 0 || idx == log.depth_count) {
+        if (idx == 0 || idx == log.axis_count) {
             continue; // Skip if out of bounds
         }
 
         // Interpolate for each azimuth
         for (size_t j = 0; j < azimuth_points; ++j) {
             float azimuth = j * (360.0f / azimuth_points); // Azimuth evenly spaced
-            resampled_data[i][j] = log.data[idx * log.azimuth_count + j];
+            resampled_data[i][j] = log.amplitude_data[idx * log.azimuth_count + j];
         }
     }
 
