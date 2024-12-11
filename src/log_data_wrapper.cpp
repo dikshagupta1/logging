@@ -29,6 +29,6 @@ std::vector<float> LogDataWrapper::getSubset(float start, float end) {
 LogMetadata LogDataWrapper::getMetadata() const {
     // TODO: implementation
     
-    LogMetadata *metadata = nil;
-    return &metadata;
+    LogMetadata metadata;
+    return metadata;
 }

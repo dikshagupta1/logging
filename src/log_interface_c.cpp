@@ -10,7 +10,7 @@ LogHandle load_log_data_c(const char* file_path, LogType log_type) {
     LogData* log = nullptr;
 
     switch (log_type) {
-        case LOG_TYPE_ULTRASONIC_AMPLITUDE:
+        case ULTRASONIC_AMPLITUDE:
             log = new UltrasonicAmplitudeLogData();
             break;
         // Add cases for other log types...
@@ -43,7 +43,7 @@ int get_log_subset_c(LogHandle log_handle, float start, float end, float* out_su
     return static_cast<int>(subset.size());
 }
 
-int get_log_metadata_c(LogHandle log_handle, LogMetadata metadata) {
+int get_log_metadata_c(LogHandle log_handle, LogMetadata *metadata) {
     if (!log_handle || !metadata) return -1;
 
     LogData* log = static_cast<LogData*>(log_handle);

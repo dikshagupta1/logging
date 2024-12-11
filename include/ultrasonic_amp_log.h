@@ -8,12 +8,12 @@
  */
 class UltrasonicAmplitudeLogData : public LogData {
 private:
-    UltrasonicAmplitudeLogData log;
+    UltrasonicAmplitudeLog log;
 
 public:
     void load(const std::string& file_path) override;
     std::vector<float> getSubset(float start_depth, float end_depth) override;
-    LogMetadata getMetadata() const override;
+    LogMetadata* getMetadata() const override;
 };
 
 #endif // ULTRASONIC_AMP_LOG_DATA_H
