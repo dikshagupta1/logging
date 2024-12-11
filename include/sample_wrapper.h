@@ -14,7 +14,7 @@ public:
     ~LogDataWrapper();
 
     std::vector<float> getSubset(float start, float end);
-    LogMetadata& getMetadata() const;
+    LogMetadata& getMetadata();
 };
 
 #endif // SAMPE_WRAPPER_H

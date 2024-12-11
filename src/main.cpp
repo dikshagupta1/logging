@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include "log_types.h"
-#include "resampler.cpp"
+#include "resampler.h"
 
 void print_resampled_data(const std::vector<std::vector<float>>& data) {
     for (const auto& row : data) {
