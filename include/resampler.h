@@ -27,7 +27,7 @@ public:
     );
 
 private:
-    static float interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi);
+    //static float interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi);
 };
 
 #endif // RESAMPLER_H

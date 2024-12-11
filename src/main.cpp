@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "log_data.h"
+#include "log_types.h"
 #include "resampler.cpp"
 
 void print_resampled_data(const std::vector<std::vector<float>>& data) {

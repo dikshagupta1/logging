@@ -43,18 +43,20 @@
     return resampled_data;
 }*/
 
-std::vector<std::vector<float>> resampleLog(
+std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
     const UltrasonicAmplitudeLog& log,
-    float depth_min, float depth_max,
-    size_t resample_depth_points, size_t resample_azimuth_points) {
+    float depth_min, 
+    float depth_max,
+    size_t depth_points, 
+    size_t azimuth_points) {
     
     std::vector<std::vector<float>> resampled_data(
-        resample_depth_points, std::vector<float>(resample_azimuth_points, 0.0f));
+        depth_points, std::vector<float>(azimuth_points, 0.0f));
 
-    float depth_step = (depth_max - depth_min) / resample_depth_points;
-    float azimuth_step = 360.0f / resample_azimuth_points;
+    float depth_step = (depth_max - depth_min) / depth_points;
+    float azimuth_step = 360.0f / azimuth_points;
 
-    for (size_t i = 0; i < resample_depth_points; ++i) {
+    for (size_t i = 0; i < depth_points; ++i) {
         float depth = depth_min + i * depth_step;
 
         // Find the closest depth index in the original data
@@ -65,7 +67,7 @@ std::vector<std::vector<float>> resampleLog(
             }
         }
 
-        for (size_t j = 0; j < resample_azimuth_points; ++j) {
+        for (size_t j = 0; j < azimuth_points; ++j) {
             // Calculate azimuth based on the resample step
             float azimuth = j * azimuth_step;
 
@@ -81,7 +83,7 @@ std::vector<std::vector<float>> resampleLog(
 }
 
 
-float Resampler::interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi) {
+/*float Resampler::interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi) {
     auto it = std::lower_bound(x.begin(), x.end(), xi);
     size_t idx = std::distance(x.begin(), it);
 
@@ -98,3 +100,4 @@ float Resampler::interpolate(const std::vector<float>& x, const std::vector<floa
 
     return y1 + (xi - x1) * (y2 - y1) / (x2 - x1);
 }
+*/
