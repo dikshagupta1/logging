@@ -80,7 +80,7 @@ std::vector<std::vector<float>> Resampler::resampleToDepthGrid(const UltrasonicA
                 azimuth_weight = (target_azimuth - azimuth_idx1 * log.azimuth_step) /
                                  log.azimuth_step;
             } else {
-                    //azimuth_weight = 1.0f;
+                //azimuth_weight = 1.0f;
                 // Wrap-around interpolation for last-to-first azimuth indices
                 azimuth_weight = (target_azimuth - azimuth_idx1 * log.azimuth_step) /
                                  (log.azimuth_step - 360.0f );

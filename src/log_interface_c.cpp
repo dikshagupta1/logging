@@ -49,18 +49,6 @@ int get_log_metadata_c(LogHandle log_handle, LogMetadata* metadata) {
     LogData* log = static_cast<LogData*>(log_handle);
     *metadata = log->getMetadata();
 
-    /* Copy name
-    std::strncpy(name, metadata.name.c_str(), name_size - 1);
-    name[name_size - 1] = '\0';
-
-    // Copy units
-    std::strncpy(units, metadata.units.c_str(), units_size - 1);
-    units[units_size - 1] = '\0';
-
-    // Copy axis
-    std::strncpy(axis, metadata.axis.c_str(), axis_size - 1);
-    axis[axis_size - 1] = '\0';*/
-
     return 0;
 }
 

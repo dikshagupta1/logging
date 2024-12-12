@@ -45,7 +45,7 @@ This project provides data structures, interfaces, and a resampling implementati
     make
 3. Run the program:
     ```bash
-    ./log_exercise
+    ./logging
 
 ### Testing
 Tests are located in the tests/ folder and built with the main project. Run tests using:
@@ -71,36 +71,11 @@ Implemented in resampler.cpp, the Resampler class:
 - Resamples it to an evenly spaced grid for visualization against a depth axis.
 
 ### Developer Notes
-**Functions**
-1. load_log_data_c:
-    
-    Dynamically loads a specific type of log data from a file.
-    Takes the file path and log type as input.
-    Returns a generic void* pointer that can be cast to the appropriate log type (e.g., UltrasonicAmplitudeLog*).
-
-2. get_log_subset_c:
-
-    Extracts a subset of the log data within a specified range (depth or time).
-    Useful for analyzing or visualizing specific sections of the dataset.
-
-3. get_log_metadata_c:
-
-    Provides access to the metadata of the log, such as name, units, and axis type.
-    Helps in understanding the context and structure of the log.
-
-4. free_log_data_c:
-
-    Frees all dynamically allocated memory associated with the log data.
-    Ensures efficient memory management and avoids leaks.
-
-**Notes**
-- The void* return type in load_log_data_c and get_log_subset_c allows flexibility for multiple log types. Cast it to the appropriate type based on LogType.
-- The interface is lightweight, providing only essential functionality for interacting with log data while keeping the implementation hidden.
+#### For architecture overview and developer notes about the design and decisions read [Developer Overview](DEVELOPER_OVERVIEW.md).
 
 ---
 ## **Future Work**
-- Add support for dynamic range in OpticalImageLog.
-- Extend interfaces to support data saving.
+- Initially I have implemented the structure and logic for Ultraonic Amplitude Log. Future enhancements include adding support for other three logs.
 
 
 
