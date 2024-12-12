@@ -21,7 +21,7 @@ set(SOURCES
 )
 
 # Add Executable
-add_executable(loggind ${SOURCES})
+add_executable(logging ${SOURCES})
 
 # Add Tests
 enable_testing()

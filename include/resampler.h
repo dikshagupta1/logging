@@ -25,7 +25,7 @@ public:
         size_t depth_points,
         size_t azimuth_points
     );
-
+    
 private:
     //static float interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi);
 };

@@ -2,94 +2,75 @@
 #include <vector>
 #include "log_types.h"
 #include "resampler.h"
+#include <cstring>
 
-void print_resampled_data(const std::vector<std::vector<float>>& data) {
-    for (const auto& row : data) {
-        for (float val : row) {
-            std::cout << val << " ";
+// Function to create a sample UltrasonicAmplitudeLog for testing
+UltrasonicAmplitudeLog createSampleLog() {
+    UltrasonicAmplitudeLog log;
+
+    // Metadata
+    strncpy(log.metadata.name, "ULTRASONIC_AMPLITUDE", sizeof(log.metadata.name));
+    strncpy(log.metadata.units, "meters", sizeof(log.metadata.units));
+    strncpy(log.metadata.axis, "AXIS_DEPTH", sizeof(log.metadata.axis));
+
+    // Define sample depths
+    log.axis_count = 5;
+    log.axis_value = new float[log.axis_count]{100.0, 200.0, 300.0, 400.0, 500.0};
+
+    // Define sample azimuth points
+    log.azimuth_count = 6;
+    log.azimuth_step = 60.0f; // Azimuth steps of 60 degrees (6 points from 0° to 360°)
+
+    // Create sample amplitude data (5 rows x 6 columns)
+    log.amplitude_data = new float*[log.axis_count];
+    for (size_t i = 0; i < log.axis_count; ++i) {
+        log.amplitude_data[i] = new float[log.azimuth_count];
+        for (size_t j = 0; j < log.azimuth_count; ++j) {
+            log.amplitude_data[i][j] = static_cast<float>(i * 10 + j); // Example values
+            std::cout << log.amplitude_data[i][j] << " ";
         }
-        std::cout << std::endl;
+        std::cout << "\n";
     }
+    return log;
+}
+
+// Function to clean up dynamically allocated memory in UltrasonicAmplitudeLog
+void cleanupLog(UltrasonicAmplitudeLog& log) {
+    delete[] log.axis_value;
+    for (size_t i = 0; i < log.axis_count; ++i) {
+        delete[] log.amplitude_data[i];
+    }
+    delete[] log.amplitude_data;
 }
 
 int main() {
-    // Example dataset for Ultrasonic Amplitude Log
-    /*size_t rows = 5;
-    size_t columns = 10;
-    float azimuth_step = 0.6;
-    std::vector<float> data(rows * columns, 1.0f); // Dummy data
-    LogMetadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
+    // Create a sample UltrasonicAmplitudeLog
+    UltrasonicAmplitudeLog log = createSampleLog();
 
-    UltrasonicAmplitudeLog log = {
-        data.data(),
-        rows,
-        columns,
-        azimuth_step,
-        metadata
-    };
+    // Define resampling parameters 
+    float depth_min = 150.0f;
+    float depth_max = 450.0f;
+    size_t resample_depth_points = 4;  // Resample to 4 depths
+    size_t resample_azimuth_points = 8; // Resample to 8 azimuth points
 
-    Resampler resampler;
-    auto resampled = resampler.resample(log, 0.0f, 5.0f, 3, 5);
+    // Create Resampler obj
+    Resampler resample;
 
+    // Call the resample function
+    std::vector<std::vector<float>> resampled_data = resample.resampleToDepthGrid(
+        log, depth_min, depth_max, resample_depth_points, resample_azimuth_points);
+
+    // Print the resampled data
     std::cout << "Resampled Data:\n";
-    print_resampled_data(resampled);
-
-    // Example 2
-    // Load Ultrasonic Amplitude log
-    UltrasonicAmplitudeLog* log = (UltrasonicAmplitudeLog*)load_log_data_c("ultrasonic_log.dat", ULTRASONIC_AMPLITUDE);
-    if (!log) {
-        printf("Failed to load log data.\n");
-        return 1;
-    }
-
-    // Get metadata
-    LogMetadata metadata = get_log_metadata_c(log);
-    printf("Log Name: %s, Units: %s\n", metadata.name, metadata.units);
-
-    // Extract a subset
-    UltrasonicAmplitudeLog* subset = (UltrasonicAmplitudeLog*)get_log_subset_c(log, 0.0f, 10.0f);
-    if (subset) {
-        printf("Subset extracted successfully.\n");
-        free_log_data_c(subset);
-    }
-
-    // Free memory
-    free_log_data_c(log);
-
-    //Example 3
-    // Simulated log data for testing
-    UltrasonicAmplitudeLog log;
-    log.name = "Ultrasonic Amplitude Log";
-    log.unit = "Amplitude";
-    log.depths = new float[5]{0.0f, 0.5f, 1.0f, 1.5f, 2.0f};
-    log.depth_count = 5;
-    log.azimuth_count = 6; // 0°, 60°, ..., 300°
-    log.data = new float[30]{
-        1.0f, 1.2f, 1.1f, 1.3f, 1.4f, 1.5f,  // Depth 0.0
-        2.0f, 2.1f, 2.2f, 2.3f, 2.4f, 2.5f,  // Depth 0.5
-        3.0f, 3.1f, 3.2f, 3.3f, 3.4f, 3.5f,  // Depth 1.0
-        4.0f, 4.1f, 4.2f, 4.3f, 4.4f, 4.5f,  // Depth 1.5
-        5.0f, 5.1f, 5.2f, 5.3f, 5.4f, 5.5f   // Depth 2.0
-    };
-
-    // Resample
-    try {
-        auto resampled_data = Resampler::resampleToDepthGrid(log, 0.5f, 1.5f, 3, 6);
-
-        // Print results
-        for (const auto& row : resampled_data) {
-            for (float value : row) {
-                std::cout << value << " ";
-            }
-            std::cout << std::endl;
+    for (size_t i = 0; i < resampled_data.size(); ++i) {
+        for (size_t j = 0; j < resampled_data[i].size(); ++j) {
+            std::cout << resampled_data[i][j] << " ";
         }
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
+        std::cout << "\n";
     }
 
-    // Clean up
-    delete[] log.depths;
-    delete[] log.data;*/
+    // Clean up allocated memory
+    cleanupLog(log);
 
     return 0;
 }

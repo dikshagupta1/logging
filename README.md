@@ -11,12 +11,12 @@ This project provides data structures, interfaces, and a resampling implementati
 │ ├── log_types.h 
 │ ├── log_interface.h
 │ ├── log_interface_c.h
-│ ├── log_data_wrapper.h
+│ ├── sample_wrapper.h
 │ ├── resampler.h
 │ ├── ultrasonic_amp_log.h 
 ├── src/ # Source files for implementation
 │ ├── log_interface_c.cpp
-│ ├── log_data_wrapper.cpp
+│ ├── sample_wrapper.cpp
 │ ├── resampler.cpp 
 │ ├── main.cpp 
 │ ├── ultrasonic_amp_log.cpp
