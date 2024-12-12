@@ -2,6 +2,10 @@
 
 ---
 
+### UML
+The below diagram gives a birds eye everview of what will be described further.
+![alt text](image.png)
+
 ### Data Structure
 **Where implemented: In log_types.h**
 
