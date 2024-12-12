@@ -60,22 +60,22 @@ std::vector<std::vector<float>> Resampler::resampleToDepthGrid(const UltrasonicA
             }
 
             // Prioritize the most recent data by comparing timestamps
-+           size_t latest_depth_index = depth_idx1;
-+           double latest_timestamp = log.timestamps[depth_idx1]; // Start with the first depth index's timestamp
-+
-+           // Check if there's another depth sample with the same depth and prioritize the most recent
-+           for (size_t k = depth_idx1; k <= depth_idx2; ++k) {
-+               if (log.axis_value[k] == target_depth) {
-+                   if (log.timestamps[k] > latest_timestamp) {
-+                       latest_timestamp = log.timestamps[k];
-+                       latest_depth_index = k;
-+                   }
-+               }
-+           }
-+
-+           // Bilinear interpolation: compute value from 4 surrounding points, prioritizing the most recent data
-+           float v11 = log.amplitude_data[latest_depth_index][azimuth_idx1];
-+           float v12 = log.amplitude_data[latest_depth_index][azimuth_idx2];
+            size_t latest_depth_index = depth_idx1;
+            double latest_timestamp = log.timestamps[depth_idx1]; // Start with the first depth index's timestamp
+
+            // Check if there's another depth sample with the same depth and prioritize the most recent
+            for (size_t k = depth_idx1; k <= depth_idx2; ++k) {
+                if (log.axis_value[k] == target_depth) {
+                    if (log.timestamps[k] > latest_timestamp) {
+                        latest_timestamp = log.timestamps[k];
+                        latest_depth_index = k;
+                    }
+                }
+            }
+
+            // Bilinear interpolation: compute value from 4 surrounding points, prioritizing the most recent data
+            float v11 = log.amplitude_data[latest_depth_index][azimuth_idx1];
+            float v12 = log.amplitude_data[latest_depth_index][azimuth_idx2];
             float v21 = log.amplitude_data[depth_idx2][azimuth_idx1];
             float v22 = log.amplitude_data[depth_idx2][azimuth_idx2];
 
