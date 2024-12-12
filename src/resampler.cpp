@@ -2,12 +2,40 @@
 #include <cmath>
 #include <vector>
 #include "log_types.h"
+#include <iostream>
+
+// Limit to a reasonable number of points (e.g., a 1080p screen resolution)
+#define MAX_POINTS 1920 * 1080  // 1080p resolution, can be adjusted
 
 std::vector<std::vector<float>> Resampler::resampleToDepthGrid(const UltrasonicAmplitudeLog& log,
                                             float start_depth,
                                             float end_depth,
                                             size_t resample_depth_count,
                                             size_t resample_azimuth_count) {
+    
+    // Ensure the resampling grid does not exceed MAX_POINTS
+    size_t total_points = resample_depth_count * resample_azimuth_count;
+
+    // If the total points exceed MAX_POINTS, adjust resample_depth_count or resample_azimuth_count
+    if (total_points > MAX_POINTS) {
+        // Try adjusting resample_depth_count first
+        float ratio = static_cast<float>(total_points) / MAX_POINTS;
+
+        // Adjust resample_depth_count based on the ratio, but ensure it doesn't go below 1
+        resample_depth_count = std::max<size_t>(1, static_cast<size_t>(resample_depth_count / ratio));
+
+        // Recalculate the total points after adjusting resample_depth_count
+        total_points = resample_depth_count * resample_azimuth_count;
+
+        // If the total points still exceed MAX_POINTS, adjust resample_azimuth_count
+        if (total_points > MAX_POINTS) {
+            ratio = static_cast<float>(total_points) / MAX_POINTS;
+            resample_azimuth_count = std::max<size_t>(1, static_cast<size_t>(resample_azimuth_count / ratio));
+        }
+    }
+    std::cout << "Resampling with " << resample_depth_count << " depth points and "
+              << resample_azimuth_count << " azimuth points." << std::endl;
+    
     // Create the resampled data grid
     std::vector<std::vector<float>> resampled_data(resample_depth_count,
                                                     std::vector<float>(resample_azimuth_count, 0.0f));
