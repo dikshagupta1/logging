@@ -22,6 +22,7 @@ UltrasonicAmplitudeLog createSampleLog() {
     log.azimuth_count = 6;
     log.azimuth_step = 60.0f; // Azimuth steps of 60 degrees (6 points from 0° to 360°)
 
+    std::cout << "Input Data:\n";
     // Create sample amplitude data (5 rows x 6 columns)
     log.amplitude_data = new float*[log.axis_count];
     for (size_t i = 0; i < log.axis_count; ++i) {

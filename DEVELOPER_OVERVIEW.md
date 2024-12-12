@@ -421,7 +421,7 @@ The implementation (to be added later) will:
 
     Requirement: Verify resampling functionality with appropriate test data.
     Code Implementation:
-    The main.cpp and resampler_test.cpp files provides a test case where:
+    The main.cpp file provides a test case where:
     - log is populated with synthetic depth and azimuth data.
     - Resampling is performed for a depth range.
     - The output is printed to verify correctness.
