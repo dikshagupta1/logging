@@ -76,6 +76,7 @@ Implemented in resampler.cpp, the Resampler class:
 ---
 ## **Future Work**
 - Initially I have implemented the structure and logic for Ultraonic Amplitude Log. Future enhancements include adding support for other three logs.
+- As of now there is a single test that can be run via main or the test file resampler_test.cpp. In future, the resampler_test.cpp will include google/catch2 style test cases.
 
 
 

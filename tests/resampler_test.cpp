@@ -1,41 +1,77 @@
-#include <cassert>
 #include <iostream>
+#include <vector>
 #include "log_types.h"
 #include "resampler.h"
+#include <cstring>
 
-void test_resampler() {
-    /*size_t rows = 5;
-    size_t columns = 10;
-    float azimuth_step = 0.6;
-    std::vector<float> data(rows * columns, 1.0f); // Dummy data
-    LogMetadata metadata = {"Ultrasonic Log", "arbitrary units", AXIS_DEPTH};
+// Function to create a sample UltrasonicAmplitudeLog for testing
+UltrasonicAmplitudeLog createSampleLog() {
+    UltrasonicAmplitudeLog log;
 
-    UltrasonicAmplitudeLog log = {
-        data.data(),
-        rows,
-        columns,
-        azimuth_step,
-        metadata
-    };
+    // Metadata
+    strncpy(log.metadata.name, "ULTRASONIC_AMPLITUDE", sizeof(log.metadata.name));
+    strncpy(log.metadata.units, "meters", sizeof(log.metadata.units));
+    strncpy(log.metadata.axis, "AXIS_DEPTH", sizeof(log.metadata.axis));
 
-    Resampler resampler;
-    auto resampled = resampler.resample(log, 0.0f, 5.0f, 3, 5);
+    // Define sample depths and timestamps
+    log.axis_count = 5;
+    log.axis_value = new float[log.axis_count]{100.0, 200.0, 300.0, 400.0, 500.0};
+    log.timestamps = new double[log.axis_count]{1.0, 2.0, 3.0, 4.0, 4.0};
 
-    // Validate size
-    assert(resampled.size() == 3);
-    assert(resampled[0].size() == 5);
+    // Define sample azimuth points
+    log.azimuth_count = 6;
+    log.azimuth_step = 60.0f; // Azimuth steps of 60 degrees (6 points from 0° to 360°)
 
-    // Validate values
-    for (const auto& row : resampled) {
-        for (float val : row) {
-            assert(val == 1.0f);
+    // Create sample amplitude data (5 rows x 6 columns)
+    log.amplitude_data = new float*[log.axis_count];
+    for (size_t i = 0; i < log.axis_count; ++i) {
+        log.amplitude_data[i] = new float[log.azimuth_count];
+        for (size_t j = 0; j < log.azimuth_count; ++j) {
+            log.amplitude_data[i][j] = static_cast<float>(i * 10 + j); // Example values
+            std::cout << log.amplitude_data[i][j] << " ";
         }
+        std::cout << "\n";
     }
+    return log;
+}
 
-    std::cout << "All tests passed!\n";*/
+// Function to clean up dynamically allocated memory in UltrasonicAmplitudeLog
+void cleanupLog(UltrasonicAmplitudeLog& log) {
+    delete[] log.axis_value;
+    for (size_t i = 0; i < log.axis_count; ++i) {
+        delete[] log.amplitude_data[i];
+    }
+    delete[] log.amplitude_data;
 }
 
 int main() {
-    test_resampler();
+    // Create a sample UltrasonicAmplitudeLog
+    UltrasonicAmplitudeLog log = createSampleLog();
+
+    // Define resampling parameters 
+    float depth_min = 150.0f;
+    float depth_max = 450.0f;
+    size_t resample_depth_points = 4;  // Resample to 4 depths
+    size_t resample_azimuth_points = 8; // Resample to 8 azimuth points
+
+    // Create Resampler obj
+    Resampler resample;
+
+    // Call the resample function
+    std::vector<std::vector<float>> resampled_data = resample.resampleToDepthGrid(
+        log, depth_min, depth_max, resample_depth_points, resample_azimuth_points);
+
+    // Print the resampled data
+    std::cout << "Resampled Data:\n";
+    for (size_t i = 0; i < resampled_data.size(); ++i) {
+        for (size_t j = 0; j < resampled_data[i].size(); ++j) {
+            std::cout << resampled_data[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+
+    // Clean up allocated memory
+    cleanupLog(log);
+
     return 0;
 }

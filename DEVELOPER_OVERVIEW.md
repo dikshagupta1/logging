@@ -341,9 +341,9 @@ The implementation (to be added later) will:
     Inputs include the dataset, depth and azimuth range, and grid size for depth and azimuth.
     Code Implementation:
     Inputs to the resampleToDepthGrid function:
-    log: The original dataset (UltrasonicAmplitudeLog).
-    start_depth and end_depth: Define the range of depths to resample.
-    depth_points and azimuth_points: Specify the number of points to resample in the depth and azimuth dimensions.
+    - log: The original dataset (UltrasonicAmplitudeLog).
+    - start_depth and end_depth: Define the range of depths to resample.
+    - depth_points and azimuth_points: Specify the number of points to resample in the depth and azimuth dimensions.
 
 3. **Task: Evenly Gridded Output**
 
@@ -421,10 +421,11 @@ The implementation (to be added later) will:
 
     Requirement: Verify resampling functionality with appropriate test data.
     Code Implementation:
-    The main.cpp file provides a test case where:
-    log is populated with synthetic depth and azimuth data.
-    Resampling is performed for a depth range.
-    The output is printed to verify correctness.
+    The main.cpp and resampler_test.cpp files provides a test case where:
+    - log is populated with synthetic depth and azimuth data.
+    - Resampling is performed for a depth range.
+    - The output is printed to verify correctness.
+    In future, the resampler_test.cpp will include google/catch2 style test cases.
 
 ### Memory Management Considerations
 - Allocation: Log data objects are allocated dynamically (using new in C++). It’s crucial to provide a corresponding free_log_data_c function to release memory and prevent leaks.
