@@ -1,103 +1,77 @@
 #include "resampler.h"
+#include <cmath>
+#include <vector>
+#include "log_types.h"
 
-/*std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
-    const UltrasonicAmplitudeLog& log,
-    float start_depth,
-    float end_depth,
-    size_t depth_points,
-    size_t azimuth_points
-) {
-    if (start_depth >= end_depth || depth_points == 0 || azimuth_points == 0) {
-        throw std::invalid_argument("Invalid input parameters for resampling.");
-    }
+std::vector<std::vector<float>> Resampler::resampleToDepthGrid(const UltrasonicAmplitudeLog& log,
+                                            float start_depth,
+                                            float end_depth,
+                                            size_t resample_depth_count,
+                                            size_t resample_azimuth_count) {
+    // Create the resampled data grid
+    std::vector<std::vector<float>> resampled_data(resample_depth_count,
+                                                    std::vector<float>(resample_azimuth_count, 0.0f));
 
-    // Generate evenly spaced depths
-    std::vector<float> target_depths(depth_points);
-    float depth_step = (end_depth - start_depth) / (depth_points - 1);
-    for (size_t i = 0; i < depth_points; ++i) {
-        target_depths[i] = start_depth + i * depth_step;
-    }
+    // Calculate the depth and azimuth steps for the resampled grid
+    float depth_step = (end_depth - start_depth) / (resample_depth_count - 1);
+    float azimuth_step = 360.0f / resample_azimuth_count;
 
-    // Prepare the output grid
-    std::vector<std::vector<float>> resampled_data(depth_points, std::vector<float>(azimuth_points, 0.0f));
+    for (size_t i = 0; i < resample_depth_count; ++i) {
+        float target_depth = start_depth + i * depth_step;
 
-    // Loop through each depth and azimuth for interpolation
-    for (size_t i = 0; i < depth_points; ++i) {
-        float target_depth = target_depths[i];
+        // Find the indices and weights for depth interpolation
+        size_t depth_idx1 = 0, depth_idx2 = 0;
+        float depth_weight = 0.0f;
 
-        // Find the nearest data point in the original log
-        auto it = std::lower_bound(log.axis_value, log.axis_value + log.axis_count, target_depth);
-        size_t idx = std::distance(log.axis_value, it);
-
-        if (idx == 0 || idx == log.axis_count) {
-            continue; // Skip if out of bounds
-        }
-
-        // Interpolate for each azimuth
-        for (size_t j = 0; j < azimuth_points; ++j) {
-            float azimuth = j * (360.0f / azimuth_points); // Azimuth evenly spaced
-            resampled_data[i][j] = log.amplitude_data[idx * log.azimuth_count + j];
-        }
-    }
-
-    return resampled_data;
-}*/
-
-std::vector<std::vector<float>> Resampler::resampleToDepthGrid(
-    const UltrasonicAmplitudeLog& log,
-    float depth_min, 
-    float depth_max,
-    size_t depth_points, 
-    size_t azimuth_points) {
-    
-    std::vector<std::vector<float>> resampled_data(
-        depth_points, std::vector<float>(azimuth_points, 0.0f));
-
-    float depth_step = (depth_max - depth_min) / depth_points;
-    float azimuth_step = 360.0f / azimuth_points;
-
-    for (size_t i = 0; i < depth_points; ++i) {
-        float depth = depth_min + i * depth_step;
-
-        // Find the closest depth index in the original data
-        size_t idx = 0;
-        for (size_t k = 1; k < log.axis_count; ++k) {
-            if (std::abs(log.axis_value[k] - depth) < std::abs(log.axis_value[idx] - depth)) {
-                idx = k;
+        if (target_depth <= log.axis_value[0]) {
+            depth_idx1 = depth_idx2 = 0;
+            depth_weight = 0.0f;
+        } else if (target_depth >= log.axis_value[log.axis_count - 1]) {
+            depth_idx1 = depth_idx2 = log.axis_count - 1;
+            depth_weight = 0.0f;
+        } else {
+            for (size_t d = 0; d < log.axis_count - 1; ++d) {
+                if (log.axis_value[d] <= target_depth && target_depth < log.axis_value[d + 1]) {
+                    depth_idx1 = d;
+                    depth_idx2 = d + 1;
+                    depth_weight = (target_depth - log.axis_value[d]) /
+                                   (log.axis_value[d + 1] - log.axis_value[d]);
+                    break;
+                }
             }
         }
+         for (size_t j = 0; j < resample_azimuth_count; ++j) {
+            float target_azimuth = j * azimuth_step;
 
-        for (size_t j = 0; j < azimuth_points; ++j) {
-            // Calculate azimuth based on the resample step
-            float azimuth = j * azimuth_step;
+            // Find the indices and weights for azimuth interpolation
+            size_t azimuth_idx1 = static_cast<size_t>(target_azimuth / log.azimuth_step);
+            size_t azimuth_idx2 = (azimuth_idx1 + 1) % log.azimuth_count;
 
-            // Map azimuth to original data index
-            size_t azimuth_idx = static_cast<size_t>(azimuth / log.azimuth_step) % log.azimuth_count;
+            float azimuth_weight = 0.0f;
+            if (azimuth_idx2 > azimuth_idx1) {
+                azimuth_weight = (target_azimuth - azimuth_idx1 * log.azimuth_step) /
+                                 log.azimuth_step;
+            } else {
+                    //azimuth_weight = 1.0f;
+                // Wrap-around interpolation for last-to-first azimuth indices
+                azimuth_weight = (target_azimuth - azimuth_idx1 * log.azimuth_step) /
+                                 (log.azimuth_step - 360.0f );
 
-            // Access the amplitude_data using 2D indexing
-            resampled_data[i][j] = log.amplitude_data[idx][azimuth_idx];
+            }
+
+            // Bilinear interpolation: compute value from 4 surrounding points
+            float v11 = log.amplitude_data[depth_idx1][azimuth_idx1];
+            float v12 = log.amplitude_data[depth_idx1][azimuth_idx2];
+            float v21 = log.amplitude_data[depth_idx2][azimuth_idx1];
+            float v22 = log.amplitude_data[depth_idx2][azimuth_idx2];
+
+            float interpolated_value =
+                (1 - depth_weight) * ((1 - azimuth_weight) * v11 + azimuth_weight * v12) +
+                depth_weight * ((1 - azimuth_weight) * v21 + azimuth_weight * v22);
+
+            resampled_data[i][j] = interpolated_value;
         }
     }
 
     return resampled_data;
 }
-
-
-/*float Resampler::interpolate(const std::vector<float>& x, const std::vector<float>& y, float xi) {
-    auto it = std::lower_bound(x.begin(), x.end(), xi);
-    size_t idx = std::distance(x.begin(), it);
-
-    if (idx == 0) {
-        return y[0];
-    } else if (idx == x.size()) {
-        return y.back();
-    }
-
-    float x1 = x[idx - 1];
-    float x2 = x[idx];
-    float y1 = y[idx - 1];
-    float y2 = y[idx];
-
-    return y1 + (xi - x1) * (y2 - y1) / (x2 - x1);
-}
-*/
