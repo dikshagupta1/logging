@@ -40,14 +40,15 @@ This project provides data structures, interfaces, and a resampling implementati
    git clone https://github.com/dikshagupta1/logging.git
 2. Create a build directory and run CMake:
     ```bash
-    mkdir build && cd build
+    mkdir build
+    cd build
     cmake ..
     make
 3. Run the program:
     ```bash
     ./logging
 
-### Testing
+### Testing (Future Enhancement)
 Tests are located in the tests/ folder and built with the main project. Run tests using:
 ```bash
 ./run_tests

@@ -426,6 +426,8 @@ The implementation (to be added later) will:
     - Resampling is performed for a depth range.
     - The output is printed to verify correctness.
     In future, the resampler_test.cpp will include google/catch2 style test cases.
+    
+---
 
 ### Memory Management Considerations
 - Allocation: Log data objects are allocated dynamically (using new in C++). It’s crucial to provide a corresponding free_log_data_c function to release memory and prevent leaks.
