@@ -13,9 +13,10 @@ UltrasonicAmplitudeLog createSampleLog() {
     strncpy(log.metadata.units, "meters", sizeof(log.metadata.units));
     strncpy(log.metadata.axis, "AXIS_DEPTH", sizeof(log.metadata.axis));
 
-    // Define sample depths
+    // Define sample depths and timestamps
     log.axis_count = 5;
     log.axis_value = new float[log.axis_count]{100.0, 200.0, 300.0, 400.0, 500.0};
+    log.timestamps = new double[log.axis_count]{1.0, 2.0, 3.0, 4.0, 4.0};
 
     // Define sample azimuth points
     log.azimuth_count = 6;

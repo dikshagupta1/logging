@@ -20,6 +20,7 @@ typedef struct {
     size_t axis_count;         // Number of depth/time entries a.k.a No. of rows
     size_t azimuth_count;      // Number of azimuth points a.k.a Number of columns. (Column value is fixed as per the problem statement)
     float azimuth_step;        // Azimuth step in degrees (For our problem statement the step is fixed to 0.6)
+    double* timestamps;          // Array of timestamps for each depth/time entry (in seconds or milliseconds)
     LogMetadata metadata;
 } UltrasonicAmplitudeLog;
 
